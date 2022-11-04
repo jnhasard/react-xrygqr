@@ -71,8 +71,8 @@ function Row(props: { row: ReturnType<typeof createData> }) {
         </TableCell>
         <TableCell align="left">{row.client}</TableCell>
         <TableCell align="left">{row.rut}</TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">
+        <TableCell align="left">{row.calories}</TableCell>
+        <TableCell align="left">
           {row.fat}{' '}
           <FiberManualRecordIcon
             color={row.fat === 'Incompleto' ? 'error' : 'success'}
@@ -112,6 +112,7 @@ function Row(props: { row: ReturnType<typeof createData> }) {
                           value={historyRow.price}
                           style={{ width: '140px' }}
                           size="small"
+                          disabled={row.fat !== 'Incompleto'}
                           InputProps={{
                             endAdornment: (
                               <InputAdornment position="end">$</InputAdornment>
@@ -130,6 +131,7 @@ function Row(props: { row: ReturnType<typeof createData> }) {
                           value={historyRow.quantity}
                           style={{ width: '70px' }}
                           size="small"
+                          disabled={row.fat !== 'Incompleto'}
                           type="number"
                         />
                       </TableCell>
@@ -142,7 +144,13 @@ function Row(props: { row: ReturnType<typeof createData> }) {
                     <TableCell />
                     <TableCell />
                     <TableCell align="right">
-                      <Button variant="contained">Aprobar</Button>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        disabled={row.fat !== 'Incompleto'}
+                      >
+                        {row.fat === 'Incompleto' ? 'Aprobar' : 'Aprobado'}
+                      </Button>
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -185,13 +193,25 @@ export default function CollapsibleTable() {
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
           <TableHead>
-            <TableRow>
+            <TableRow
+              sx={{
+                backgroundColor: '#011b48',
+              }}
+            >
               <TableCell />
-              <TableCell>Pedido</TableCell>
-              <TableCell align="left">Cliente</TableCell>
-              <TableCell align="left">Rut</TableCell>
-              <TableCell align="right">Fecha</TableCell>
-              <TableCell align="right">Estado</TableCell>
+              <TableCell style={{ color: 'white' }}>Pedido</TableCell>
+              <TableCell align="left" style={{ color: 'white' }}>
+                Cliente
+              </TableCell>
+              <TableCell align="left" style={{ color: 'white' }}>
+                Rut
+              </TableCell>
+              <TableCell align="left" style={{ color: 'white' }}>
+                Fecha
+              </TableCell>
+              <TableCell align="left" style={{ color: 'white' }}>
+                Estado
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
