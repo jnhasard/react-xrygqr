@@ -11,6 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -20,14 +21,14 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 function createData(
   name: string,
   calories: string,
-  fat: string,
+  status: string,
   client: string,
   rut: string
 ) {
   return {
     name,
     calories,
-    fat,
+    status,
     client,
     rut,
     history: [
@@ -73,11 +74,11 @@ function Row(props: { row: ReturnType<typeof createData> }) {
         <TableCell align="left">{row.rut}</TableCell>
         <TableCell align="left">{row.calories}</TableCell>
         <TableCell align="left">
-          {row.fat}{' '}
           <FiberManualRecordIcon
-            color={row.fat === 'Incompleto' ? 'error' : 'success'}
+            color={row.status === 'Por revisar' ? 'error' : 'success'}
             fontSize="1px"
-          />
+          />{' '}
+          {row.status}
         </TableCell>
       </TableRow>
       <TableRow>
@@ -106,16 +107,27 @@ function Row(props: { row: ReturnType<typeof createData> }) {
                           <OpenInNewIcon />
                         </IconButton>
                       </TableCell>
-                      <TableCell align="right">{historyRow.price} $</TableCell>
+                      <TableCell align="right">
+                        <Grid container>
+                          <Grid item xs={3}>
+                            $
+                          </Grid>
+                          <Grid item xs={9} style={{ textAlign: 'right' }}>
+                            {historyRow.price}
+                          </Grid>
+                        </Grid>
+                      </TableCell>
                       <TableCell align="right">
                         <TextField
                           value={historyRow.price}
                           style={{ width: '140px' }}
                           size="small"
-                          disabled={row.fat !== 'Incompleto'}
+                          disabled={row.status !== 'Por revisar'}
                           InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">$</InputAdornment>
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                $
+                              </InputAdornment>
                             ),
                             sx: {
                               '& input': {
@@ -131,7 +143,7 @@ function Row(props: { row: ReturnType<typeof createData> }) {
                           value={historyRow.quantity}
                           style={{ width: '70px' }}
                           size="small"
-                          disabled={row.fat !== 'Incompleto'}
+                          disabled={row.status !== 'Por revisar'}
                           type="number"
                         />
                       </TableCell>
@@ -147,9 +159,11 @@ function Row(props: { row: ReturnType<typeof createData> }) {
                       <Button
                         variant="contained"
                         color="success"
-                        disabled={row.fat !== 'Incompleto'}
+                        disabled={row.status !== 'Por revisar'}
                       >
-                        {row.fat === 'Incompleto' ? 'Aprobar' : 'Aprobado'}
+                        {row.status === 'Por revisar'
+                          ? 'Marcar como revisado'
+                          : 'Revisado'}
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -167,21 +181,21 @@ const rows = [
   createData(
     '#2543',
     '19-10-2022',
-    'Incompleto',
+    'Por revisar',
     'Jacques Hasard',
     '19.454.448-0'
   ),
   createData(
     '#2548',
     '20-10-2022',
-    'Completo',
+    'Revisado',
     'Ricardo Susaeta',
     '19.238.553-K'
   ),
   createData(
     '#2549',
     '20-10-2022',
-    'Completo',
+    'Revisado',
     'Nancy Raticas',
     '14.650.756-5'
   ),
